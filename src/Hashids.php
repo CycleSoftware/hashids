@@ -210,7 +210,7 @@ class Hashids implements HashidsInterface
 
             $excess = strlen($ret) - $this->minHashLength;
             if ($excess > 0) {
-                $ret = substr($ret, $excess / 2, $this->minHashLength);
+                $ret = substr($ret, floor($excess / 2), $this->minHashLength);
             }
         }
 
