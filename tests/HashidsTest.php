@@ -12,6 +12,7 @@
 namespace Hashids\Tests;
 
 use Hashids\Hashids;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,19 +22,15 @@ use PHPUnit\Framework\TestCase;
  */
 class HashidsTest extends TestCase
 {
-    /**
-     * @expectedException \Hashids\HashidsException
-     */
     public function testSmallAlphabet()
     {
+        $this->expectException(\Hashids\HashidsException::class);
         new Hashids('', 0, '1234567890');
     }
 
-    /**
-     * @expectedException \Hashids\HashidsException
-     */
     public function testAlphabetWithSpace()
     {
+        $this->expectException(\Hashids\HashidsException::class);
         new Hashids('', 0, 'a cdefghijklmnopqrstuvwxyz');
     }
 
@@ -252,7 +249,7 @@ class HashidsTest extends TestCase
         }
     }
 
-    public function bigNumberDataProvider()
+    public static function bigNumberDataProvider()
     {
         return [
             [2147483647, 'ykJWW1g'], //max 32-bit signed integer
@@ -262,9 +259,7 @@ class HashidsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider bigNumberDataProvider
-     */
+    #[DataProvider('bigNumberDataProvider')]
     public function testBigNumberEncode($number, $hash)
     {
         $hashids = new Hashids('this is my salt');
@@ -272,9 +267,7 @@ class HashidsTest extends TestCase
         $this->assertEquals($hash, $encoded);
     }
 
-    /**
-     * @dataProvider bigNumberDataProvider
-     */
+    #[DataProvider('bigNumberDataProvider')]
     public function testBigNumberDecode($number, $hash)
     {
         $hashids = new Hashids('this is my salt');
@@ -282,9 +275,6 @@ class HashidsTest extends TestCase
         $this->assertEquals($number, $decoded[0]);
     }
 
-    /**
-     * @requires function bcscale
-     */
     public function testBehaviourForDifferentBCMathAccuracy()
     {
         bcscale(2);
