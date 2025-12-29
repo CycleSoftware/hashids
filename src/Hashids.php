@@ -183,7 +183,7 @@ class Hashids implements HashidsInterface
             $ret .= $last = $this->hash($number, $alphabet);
 
             if ($i + 1 < $numbersSize) {
-                $number %= (ord($last) + $i);
+                $number %= (ord($last[0]) + $i);
                 $sepsIndex = $this->math->intval($this->math->mod($number, strlen($this->seps)));
                 $ret .= $this->seps[$sepsIndex];
             }
